@@ -19,10 +19,12 @@ steps:
     npm install
     npm run build
   displayName: 'npm install and build'
-
-- task: vercel-deployment-task@1
+- task: CopyFiles@2
   inputs:
-    vercelProjectId: 'prj_ehbA8cAoZVq3oujcbgCr9fwu3532'
-    vercelOrgId: '7mZDtGUCnUm96YI8AXNKnvaz'
-    vercelToken: $(VERCEL_TOKEN)
-    production: true
+    Contents: 'dist/**'
+    TargetFolder: $(Build.ArtifactStagingDirectory)
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'release'
+    publishLocation: 'Container'
